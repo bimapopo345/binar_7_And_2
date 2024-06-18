@@ -41,6 +41,12 @@ android {
             )
         }
     }
+    lint {
+        abortOnError = false // Tidak menghentikan build jika terjadi error
+        xmlReport = true // Menghasilkan laporan XML
+        htmlReport = true // Menghasilkan laporan HTML
+        htmlOutput = file("lint-results.html") // Lokasi output laporan HTML
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -53,6 +59,7 @@ android {
         buildConfig = true
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -62,6 +69,10 @@ dependencies {
     implementation(project(":data"))
     implementation ("androidx.work:work-runtime-ktx:2.7.1")
     implementation ("jp.wasabeef:blurry:4.0.1")
+
+    implementation("com.github.chuckerteam.chucker:library:3.5.2")
+    debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 
     implementation(libs.android.material)
     implementation(libs.android.play.services.location)

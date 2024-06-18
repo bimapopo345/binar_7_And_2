@@ -3,6 +3,7 @@ package com.gpillaca.upcomingmovies.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.gpillaca.upcomingmovies.BuildConfig
 import com.gpillaca.upcomingmovies.mappers.MovieMapper
 import com.gpillaca.upcomingmovies.data.PermissionChecker
@@ -58,9 +59,15 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient = HttpLoggingInterceptor().run {
-        level = HttpLoggingInterceptor.Level.BODY
-        OkHttpClient.Builder().addInterceptor(this).build()
+    fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(ChuckerInterceptor.Builder(context).build())
+            .build()
     }
 
     @Provides
